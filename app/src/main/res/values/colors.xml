@@ -5,4 +5,6 @@
     <color name="colorPrimaryDark">#B53D00</color>
     <color name="colorAccent">#558B2F</color>
     <color name="background_color">#EEE</color>
+
+    <color name="footer_and_empty_state_text_color">#4A4A4A</color>
 </resources>

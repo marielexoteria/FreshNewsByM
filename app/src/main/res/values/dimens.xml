@@ -5,10 +5,13 @@
     <dimen name="divider_height">0dp</dimen>
     <dimen name="empty_state_text_space">10dp</dimen>
 
+    <!-- Dimension used in the circular progress bar -->
+    <dimen name="circular_progess_bar_size">32dp</dimen>
+
     <!-- Dimensions used in fresh_news_list_item.xml-->
     <dimen name="padding_horizontal">16dp</dimen>
     <dimen name="padding_vertical">16dp</dimen>
-    <dimen name="margin_general">30dp</dimen>
+    <dimen name="space_between_list_items">30dp</dimen>
     <dimen name="margin_vertical">10dp</dimen>
 
     <dimen name="news_title">18sp</dimen>
@@ -16,8 +19,10 @@
     <dimen name="section">14sp</dimen>
 
     <dimen name="space_byline_date">10dp</dimen>
-    <dimen name="space_between_news">25dp</dimen>
-    <dimen name="zero_dp">0dp</dimen>
+    <dimen name="space_after_section">25dp</dimen>
+    <dimen name="zero_dp">0dp</dimen> <!-- also used in drawable/card_style_background.xml -->
 
-
+    <!-- Dimensions used in drawable/card_style_background.xml -->
+    <dimen name="border_radius_shape">2dp</dimen>
+    <dimen name="border_radius_shadow">2.5dp</dimen>
 </resources>

@@ -75,7 +75,8 @@ public class FreshNewsAdapter extends ArrayAdapter<FreshNews> {
 
         //Headline
         TextView headline = (TextView) listItemView.findViewById(R.id.headline);
-        headline.setText(position+1 + ") " +currentFreshNews.getHeadline());
+        headline.setText(currentFreshNews.getHeadline());
+        //headline.setText(position+1 + ") " +currentFreshNews.getHeadline());
 
         //By-line
         TextView byline = (TextView) listItemView.findViewById(R.id.byline);

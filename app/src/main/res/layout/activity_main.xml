@@ -2,6 +2,7 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background_color">
@@ -12,11 +13,38 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@null"
-        android:dividerHeight="@dimen/margin_general"
-        android:layout_marginBottom="@dimen/margin_general"/>
+        android:dividerHeight="@dimen/space_between_list_items"/>
 
-    <!-- Empty view is only visible when the list has
-    no items or on no internet connection. -->
+    <!-- Circular loading indicator and loading text
+   are only shown before the first load -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="horizontal"
+        android:gravity="center">
+
+        <ProgressBar
+            android:id="@+id/loading_indicator"
+            android:theme="@style/CircularProgress"
+            style="@style/Widget.AppCompat.ProgressBar"
+            android:layout_width="@dimen/circular_progess_bar_size"
+            android:layout_height="@dimen/circular_progess_bar_size"
+            android:layout_gravity="center_vertical"/>
+
+        <TextView
+            android:id="@+id/text_loading"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:textColor="@color/footer_and_empty_state_text_color"
+            android:layout_marginLeft="@dimen/empty_state_text_space"
+            android:text="@string/text_loading"/>
+
+    </LinearLayout>
+
+
+    <!-- Empty view that is only visible when the list
+    has no items or on no internet connection. -->
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -28,43 +56,17 @@
             android:id="@+id/empty_view_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:src="@drawable/no_wifi"/>
+            tools:src="@drawable/no_wifi"
+            android:contentDescription="@string/empty_state_description"/>
 
         <TextView
             android:id="@+id/empty_view"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceSmall"
-            android:layout_marginTop="@dimen/empty_state_text_space"/>
+            android:layout_marginTop="@dimen/empty_state_text_space"
+            tools:text="Empty state text"/>
 
     </LinearLayout>
-
-
-    <!-- Circular loading indicator and loading text
-    are only shown before the first load -->
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="horizontal"
-        android:gravity="center">
-
-        <ProgressBar
-            android:id="@+id/loading_indicator"
-            android:theme="@style/CircularProgress"
-            style="@style/Widget.AppCompat.ProgressBar"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center_vertical"/>
-
-        <TextView
-            android:id="@+id/text_loading"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:textAppearanceSmall"
-            android:layout_marginLeft="@dimen/empty_state_text_space"
-            android:text="@string/text_loading"/>
-
-    </LinearLayout>
-
 
 </RelativeLayout>

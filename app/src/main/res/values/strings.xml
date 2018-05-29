@@ -1,8 +1,16 @@
 <resources>
     <string name="app_name">FreshNewsByM</string>
 
+    <!-- Strings used in activity_main.xml -->
+    <string name="no_wifi_icon_description">No internet icon</string>
+    <string name="no_news_icon_description">No news icon</string>
+    <string name="empty_state_description">Image associated with empty state</string>
+
     <!-- Strings used in fresh_news_list_item.xml -->
     <string name="news_photo_description">Image associated with the news article</string>
+
+    <!-- Footer -->
+    <string name="footer">Powered by The Guardian</string>
 
     <!-- Various messages -->
     <string name="text_loading">Fetching your news&#8230;</string>

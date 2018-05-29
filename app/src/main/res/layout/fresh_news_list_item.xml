@@ -66,7 +66,7 @@
         android:id="@+id/section"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/space_between_news"
+        android:layout_marginBottom="@dimen/space_after_section"
         android:layout_marginLeft="@dimen/padding_horizontal"
         android:layout_marginRight="@dimen/padding_horizontal"
         android:layout_marginTop="@dimen/margin_vertical"

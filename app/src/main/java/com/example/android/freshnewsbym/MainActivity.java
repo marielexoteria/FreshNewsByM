@@ -1,18 +1,19 @@
 package com.example.android.freshnewsbym;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
 import android.content.Loader;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.content.Context;
 import android.net.ConnectivityManager;
@@ -45,10 +46,14 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     private TextView emptyStateTextView;
     private ImageView emptyStateImageView;
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        //Variable needed to build the footer
+        TextView footer = new TextView(this);
 
         //Find the ListView and attach the adapter to it.
         ListView freshNewsListView = (ListView) findViewById(R.id.fresh_news_list);
@@ -62,7 +67,20 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         //Create a new adapter that takes an empty list of news as input.
         newsAdapter = new FreshNewsAdapter(this, new ArrayList<FreshNews>());
 
+        //Populating the ListView
         freshNewsListView.setAdapter(newsAdapter);
+
+        //Building the footer
+        footer.setText(getString(R.string.footer));
+        footer.setGravity(Gravity.CENTER);
+        footer.setTextColor(getResources().getColor(R.color.footer_and_empty_state_text_color));
+        footer.setPadding(0,10,0, 30);
+
+        //Adding the footer
+        freshNewsListView.addFooterView(footer, null, false);
+
+        /*Enabling the link on each ListView item, so that the app user can read the news on their
+        preferred browser */
         freshNewsListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
@@ -110,8 +128,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
             //Update the empty state with no connection error message.
             emptyStateImageView.setImageResource(R.drawable.no_wifi);
             emptyStateTextView.setText(R.string.no_internet_connection);
-
         }
+
+
     }
 
     @Override

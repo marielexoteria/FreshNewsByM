@@ -188,9 +188,17 @@ public final class QueryUtils {
                 //Extracting items under the key "fields" (as specified in FreshNews.java)
                 JSONObject fields = currentNews.getJSONObject("fields");
 
-                String thumbnail = fields.getString("thumbnail");
                 String headline = fields.getString("headline");
-                String byline;
+                String thumbnail, byline;
+
+                //Fallback text in case there is no thumbnail
+                String thumb = fields.optString("thumbnail", null);
+                if (TextUtils.isEmpty(thumb)) {
+                    thumbnail = "https://github.com/marielexoteria/FreshNewsByM/blob/" +
+                            "master/app/src/main/res/drawable/error_and_fallback_image.png";
+                } else {
+                    thumbnail= fields.getString("thumbnail");
+                }
 
                 //Fallback text in case there is no author
                 if (fields.getString("byline").isEmpty()) {
