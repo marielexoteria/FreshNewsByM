@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FreshNewsByM</string>
+    <string name="app_name">Fresh News By M</string>
 
     <!-- Strings used in activity_main.xml -->
     <string name="no_wifi_icon_description">No internet icon</string>

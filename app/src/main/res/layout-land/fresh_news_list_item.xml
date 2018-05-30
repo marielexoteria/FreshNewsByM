@@ -1,19 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/list_item"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical"
+    android:orientation="horizontal"
     android:background="@drawable/card_style_background">
 
     <ImageView
         android:id="@+id/news_photo"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/news_photo_height_portrait"
-        android:contentDescription="@string/news_photo_description"
+        android:layout_height="@dimen/news_photo_height_landscape"
         android:layout_marginBottom="@dimen/padding_vertical"
+        android:contentDescription="@string/news_photo_description"
         tools:src="@drawable/loading_image_portrait" />
 
     <TextView
@@ -27,16 +27,19 @@
         android:layout_marginLeft="@dimen/padding_horizontal"
         android:layout_marginRight="@dimen/padding_horizontal"
         app:fontFamily="@font/roboto_medium"
+        android:layout_below="@id/news_photo"
         tools:text="News title goes here" />
 
     <LinearLayout
+        android:id="@+id/byline_and_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical"
         android:layout_marginTop="@dimen/margin_vertical"
         android:layout_marginLeft="@dimen/padding_horizontal"
         android:layout_marginStart="@dimen/padding_vertical"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:layout_below="@id/headline">
 
         <TextView
             android:id="@+id/byline"
@@ -46,7 +49,7 @@
             android:textColor="@android:color/black"
             android:textSize="@dimen/byline_and_date"
             android:maxLines="1"
-            tools:text="By-line" />
+            tools:text="Byline" />
 
         <TextView
             android:id="@+id/date_published"
@@ -73,6 +76,7 @@
         android:textColor="@color/colorPrimary"
         android:textSize="@dimen/byline_and_date"
         app:fontFamily="@font/roboto_medium"
+        android:layout_below="@id/byline_and_date"
         tools:text="Category" />
 
-</LinearLayout>
+</RelativeLayout>

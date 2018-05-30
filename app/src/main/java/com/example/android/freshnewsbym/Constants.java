@@ -28,6 +28,6 @@ public final class Constants {
     public static final String WEBPUBLICATIONDATE = "webPublicationDate";
 
     public static final String THUMBNAILURL = "https://github.com/marielexoteria/FreshNewsByM/blob/" +
-            "master/app/src/main/res/drawable/error_and_fallback_image.png";
+            "master/app/src/main/res/drawable/error_and_fallback_image_portrait.pngtrait.png";
     public static final String BYLINENOTFOUND = "Author not available";
 }

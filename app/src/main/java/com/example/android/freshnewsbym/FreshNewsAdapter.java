@@ -1,6 +1,7 @@
 package com.example.android.freshnewsbym;
 
 import android.app.Activity;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,11 +12,21 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 
-import butterknife.ButterKnife;
+import butterknife.BindDrawable;
 
 public class FreshNewsAdapter extends ArrayAdapter<FreshNews> {
 
     private static final String LOG_TAG = FreshNewsAdapter.class.getSimpleName();
+
+    //Declaring a ViewHolder object
+    static class ViewHolder {
+        ImageView newsPhoto;
+        TextView headline, byline, datePublished, sectionName;
+    }
+
+    //Butterknife declaration of picture assets that will be used with Glide
+    @BindDrawable(R.drawable.loading_image_portrait) Drawable imageLoading;
+    @BindDrawable(R.drawable.error_and_fallback_image_portrait) Drawable errorFallbackImage;
 
     /**
      * This is the own custom constructor (it doesn't mirror a superclass constructor).
@@ -58,10 +69,18 @@ public class FreshNewsAdapter extends ArrayAdapter<FreshNews> {
         //Get the {@link FreshNews} object located at this position in the list.
         FreshNews currentFreshNews = getItem(position);
 
-        //Start populating the different elements of the list item
+        //Populating the ViewHolder object and storing it inside the layout
+        //Tutorial at http://www.vogella.com/tutorials/AndroidListView/article.html
+        ViewHolder newsHolder = new ViewHolder();
+        newsHolder.newsPhoto = (ImageView) listItemView.findViewById(R.id.news_photo);
+        newsHolder.headline = (TextView) listItemView.findViewById(R.id.headline);
+        newsHolder.byline = (TextView) listItemView.findViewById(R.id.byline);
+        newsHolder.datePublished = (TextView) listItemView.findViewById(R.id.date_published);
+        newsHolder.sectionName = (TextView) listItemView.findViewById(R.id.section);
+        listItemView.setTag(newsHolder);
+
 
         //Thumbnail
-        ImageView newsPhoto = (ImageView) listItemView.findViewById(R.id.news_photo);
         //Using Glide library to retrieve the photos from the URLs obtained through the custom object & adapter
         /*centerCrop() is needed so that the image displays full width in the ImageView:
         http://bumptech.github.io/glide/doc/transformations.html*/
@@ -69,28 +88,24 @@ public class FreshNewsAdapter extends ArrayAdapter<FreshNews> {
         Glide.with(getContext()).load(currentFreshNews.getThumbnail())
                 .apply(
                         new RequestOptions()
-                                .placeholder(R.drawable.placeholder_image)
-                                .fallback(R.drawable.error_and_fallback_image)
-                                .error(R.drawable.error_and_fallback_image)
+                                .placeholder(imageLoading)
+                                .fallback(errorFallbackImage)
+                                .error(errorFallbackImage)
                                 .centerCrop())
-                .into(newsPhoto);
+                .into(newsHolder.newsPhoto);
 
         //Headline
-        TextView headline = (TextView) listItemView.findViewById(R.id.headline);
         //headline.setText(currentFreshNews.getHeadline());
-        headline.setText(position+1 + ") " +currentFreshNews.getHeadline());
+        newsHolder.headline.setText(position+1 + ") " +currentFreshNews.getHeadline());
 
         //By-line
-        TextView byline = (TextView) listItemView.findViewById(R.id.byline);
-        byline.setText(currentFreshNews.getByline());
+        newsHolder.byline.setText(currentFreshNews.getByline());
 
         //Date
-        TextView datePublished = (TextView) listItemView.findViewById(R.id.date_published);
-        datePublished.setText(currentFreshNews.getDatePublished());
+        newsHolder.datePublished.setText(currentFreshNews.getDatePublished());
 
         //Section (sports, travel, etc.)
-        TextView sectionName = (TextView) listItemView.findViewById(R.id.section);
-        sectionName.setText(currentFreshNews.getSectionName());
+        newsHolder.sectionName.setText(currentFreshNews.getSectionName());
 
 
         //Return the whole list item layout
