@@ -2,6 +2,7 @@ package com.example.android.freshnewsbym;
 
 import android.content.Intent;
 import android.graphics.Color;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -20,6 +21,12 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import java.util.ArrayList;
 import java.util.List;
+
+import butterknife.BindColor;
+import butterknife.BindDrawable;
+import butterknife.BindString;
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity implements LoaderCallbacks<List<FreshNews>> {
 
@@ -42,25 +49,34 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     /** Adapter for the list of news */
     private FreshNewsAdapter newsAdapter;
 
-    /** TextView that is displayed when the list is empty */
-    private TextView emptyStateTextView;
-    private ImageView emptyStateImageView;
+    //Using the Butterknife library to cast the views that will be used
+    @BindView(R.id.fresh_news_list) ListView freshNewsListView;
+    @BindView(R.id.empty_view_icon) ImageView emptyStateImageView;
+    @BindView(R.id.empty_view_text) TextView emptyStateTextView;
+    @BindView(R.id.loading_indicator) View loadingIndicator;
+    @BindView(R.id.text_loading) TextView loadingIndicatorText;
 
+    //Using the Butterknife library to attach resources used in the footer
+    @BindColor(R.color.footer_and_empty_state_text_color) int footerColor;
+    @BindString(R.string.footer) String footerText;
+
+    //Using the Butterknife library to attach resources used in the "no internet connection" use case
+    @BindDrawable(R.drawable.no_wifi) Drawable noInternetIcon;
+    @BindString(R.string.no_internet_connection) String noInternetMsg;
+
+    //Using the Butterknife library to attach resources used in the "no news found" use case
+    @BindString(R.string.no_news) String noNewsMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         //Variable needed to build the footer
         TextView footer = new TextView(this);
 
-        //Find the ListView and attach the adapter to it.
-        ListView freshNewsListView = (ListView) findViewById(R.id.fresh_news_list);
-
         //Connecting the TextView that will be the empty view.
-        emptyStateImageView = (ImageView) findViewById(R.id.empty_view_icon);
-        emptyStateTextView = (TextView) findViewById(R.id.empty_view);
         freshNewsListView.setEmptyView(emptyStateImageView);
         freshNewsListView.setEmptyView(emptyStateTextView);
 
@@ -71,9 +87,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         freshNewsListView.setAdapter(newsAdapter);
 
         //Building the footer
-        footer.setText(getString(R.string.footer));
+        footer.setText(footerText);
         footer.setGravity(Gravity.CENTER);
-        footer.setTextColor(getResources().getColor(R.color.footer_and_empty_state_text_color));
+        footer.setTextColor(footerColor);
         footer.setPadding(0,10,0, 30);
 
         //Adding the footer
@@ -94,8 +110,13 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
                 //Create a new intent to view the news URI.
                 Intent websiteIntent = new Intent(Intent.ACTION_VIEW, freshNewsUri);
 
-                //Send the intent to launch a new activity.
-                startActivity(websiteIntent);
+                //Check if there is an app installed on the phone that is able to handle an event.
+
+                if (websiteIntent.resolveActivity(getPackageManager()) != null) {
+
+                    //Send the intent to launch a new activity
+                    startActivity(websiteIntent);
+                 }
             }
         });
 
@@ -120,14 +141,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
             //Otherwise, display error. First, hide the loading indicator and text so that
             //the error message will be visible
-            View loadingIndicator = findViewById(R.id.loading_indicator);
-            TextView loadingIndicatorText = findViewById(R.id.text_loading);
             loadingIndicator.setVisibility(View.GONE);
             loadingIndicatorText.setVisibility(View.GONE);
 
             //Update the empty state with no connection error message.
-            emptyStateImageView.setImageResource(R.drawable.no_wifi);
-            emptyStateTextView.setText(R.string.no_internet_connection);
+            emptyStateImageView.setImageDrawable(noInternetIcon);
+            emptyStateTextView.setText(noInternetMsg);
         }
 
 
@@ -144,13 +163,11 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
     public void onLoadFinished(Loader<List<FreshNews>> loader, List<FreshNews> news) {
 
         //Hide the loading indicator and text because the data has been loaded.
-        View loadingIndicator = findViewById(R.id.loading_indicator);
         loadingIndicator.setVisibility(View.GONE);
-        TextView textLoading = findViewById(R.id.text_loading);
-        textLoading.setVisibility(View.GONE);
+        loadingIndicatorText.setVisibility(View.GONE);
 
         //Set empty state text to display "No news found."
-        emptyStateTextView.setText(R.string.no_news);
+        emptyStateTextView.setText(noNewsMsg);
 
         //Clear the adapter of previous news data
         newsAdapter.clear();

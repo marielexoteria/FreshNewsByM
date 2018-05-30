@@ -11,6 +11,8 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 
+import butterknife.ButterKnife;
+
 public class FreshNewsAdapter extends ArrayAdapter<FreshNews> {
 
     private static final String LOG_TAG = FreshNewsAdapter.class.getSimpleName();
@@ -75,8 +77,8 @@ public class FreshNewsAdapter extends ArrayAdapter<FreshNews> {
 
         //Headline
         TextView headline = (TextView) listItemView.findViewById(R.id.headline);
-        headline.setText(currentFreshNews.getHeadline());
-        //headline.setText(position+1 + ") " +currentFreshNews.getHeadline());
+        //headline.setText(currentFreshNews.getHeadline());
+        headline.setText(position+1 + ") " +currentFreshNews.getHeadline());
 
         //By-line
         TextView byline = (TextView) listItemView.findViewById(R.id.byline);

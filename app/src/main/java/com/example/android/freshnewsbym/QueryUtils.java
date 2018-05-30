@@ -49,7 +49,7 @@ public final class QueryUtils {
 
         //Slowing down the background thread to test the loading indicator
         try {
-            Thread.sleep(2000);
+            Thread.sleep(Constants.DELAYCONNECTION);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -59,7 +59,7 @@ public final class QueryUtils {
         try {
             jsonResponse = makeHttpRequest(url);
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem making the HTTP request.", e);
+            Log.e(LOG_TAG, Constants.IOEXCEPTIONHTTPREQUEST, e);
         }
 
         //Extract the relevant fields from the JSON response and create a list of {@link FreshNews}
@@ -77,7 +77,7 @@ public final class QueryUtils {
         try {
             url = new URL(stringUrl);
         } catch (MalformedURLException e) {
-            Log.e(LOG_TAG, "Problem building the URL ", e);
+            Log.e(LOG_TAG, Constants.MALFORMEDURLEXCEPTION, e);
         }
         return url;
     }
@@ -97,21 +97,21 @@ public final class QueryUtils {
         InputStream inputStream = null;
         try {
             urlConnection = (HttpURLConnection) url.openConnection();
-            urlConnection.setReadTimeout(10000 /* milliseconds */);
-            urlConnection.setConnectTimeout(15000 /* milliseconds */);
+            urlConnection.setReadTimeout(Constants.READTIMEOUT); /* milliseconds */
+            urlConnection.setConnectTimeout(Constants.CONNECTTIMEOUT); /* milliseconds */
             urlConnection.setRequestMethod("GET");
             urlConnection.connect();
 
             //If the request was successful (response code 200),
             //then read the input stream and parse the response.
-            if (urlConnection.getResponseCode() == 200) {
+            if (urlConnection.getResponseCode() == urlConnection.HTTP_OK) {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
-                Log.e(LOG_TAG, "Error response code: " + urlConnection.getResponseCode());
+                Log.e(LOG_TAG, Constants.RESPONDECODEURLCONNECTION + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
-            Log.e(LOG_TAG, "Problem retrieving the JSON results (URL connection).", e);
+            Log.e(LOG_TAG, Constants.IOEXCEPTIONURLCONNECTION, e);
         } finally {
             if (urlConnection != null) {
                 urlConnection.disconnect();
@@ -169,10 +169,10 @@ public final class QueryUtils {
             JSONObject listJsonResponse = new JSONObject(freshNewsJson);
 
             //(2) Extract the JSON object "response".
-            JSONObject response = listJsonResponse.getJSONObject("response");
+            JSONObject response = listJsonResponse.getJSONObject(Constants.RESPONSE);
 
             //(3) Extract the JSON array "results".
-            JSONArray freshNewsArrayJson = response.getJSONArray("results");
+            JSONArray freshNewsArrayJson = response.getJSONArray(Constants.RESULTS);
 
             /* Extracting the items one at a time (until page-size as specified in the
              * Guardian API URL).
@@ -181,30 +181,29 @@ public final class QueryUtils {
                 JSONObject currentNews = freshNewsArrayJson.getJSONObject(i);
 
                 //Extracting items directly under "results" (as specified in FreshNews.java)
-                String date = currentNews.getString("webPublicationDate");
-                String section = currentNews.getString("sectionName");
-                String url = currentNews.getString("webUrl");
+                String date = currentNews.getString(Constants.WEBPUBLICATIONDATE);
+                String section = currentNews.getString(Constants.SECTIONNAME);
+                String url = currentNews.getString(Constants.WEBURL);
 
                 //Extracting items under the key "fields" (as specified in FreshNews.java)
-                JSONObject fields = currentNews.getJSONObject("fields");
+                JSONObject fields = currentNews.getJSONObject(Constants.FIELDS);
 
-                String headline = fields.getString("headline");
+                String headline = fields.getString(Constants.HEADLINE);
                 String thumbnail, byline;
 
                 //Fallback text in case there is no thumbnail
-                String thumb = fields.optString("thumbnail", null);
+                String thumb = fields.optString(Constants.THUMBNAIL, null);
                 if (TextUtils.isEmpty(thumb)) {
-                    thumbnail = "https://github.com/marielexoteria/FreshNewsByM/blob/" +
-                            "master/app/src/main/res/drawable/error_and_fallback_image.png";
+                    thumbnail = Constants.THUMBNAILURL;
                 } else {
-                    thumbnail= fields.getString("thumbnail");
+                    thumbnail= fields.getString(Constants.THUMBNAIL);
                 }
 
                 //Fallback text in case there is no author
-                if (fields.getString("byline").isEmpty()) {
-                    byline = "Author not available";
+                if (fields.getString(Constants.BYLINE).isEmpty()) {
+                    byline = Constants.BYLINENOTFOUND;
                 } else {
-                    byline = fields.getString("byline");
+                    byline = fields.getString(Constants.BYLINE);
                 }
 
                 //Formatting the date to "May 27, 2018 14:05" on London time zone.
@@ -227,7 +226,7 @@ public final class QueryUtils {
             //If an error is thrown when executing any of the above statements in the "try" block,
             //catch the exception here, so the app doesn't crash. Print a log message
             //with the message from the exception.
-            Log.e("QueryUtils", "Problem parsing the news JSON results", e);
+            Log.e("QueryUtils", Constants.JSONEXCEPTIONQUERYUTILS, e);
         }
 
         //Return the list of news
