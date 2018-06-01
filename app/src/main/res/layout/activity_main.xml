@@ -44,19 +44,47 @@
 
 
     <!-- Empty view that is only visible when the list
-    has no items or on no internet connection. -->
+    has no items (no news to fetch). -->
 
     <LinearLayout
+        android:id="@+id/no_news_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center">
 
         <ImageView
-            android:id="@+id/empty_view_icon"
+            android:id="@+id/no_news_icon"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            tools:src="@drawable/no_wifi"
+            android:src="@drawable/no_news"
+            android:contentDescription="@string/empty_state_description"/>
+
+        <TextView
+            android:id="@+id/no_news_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:textAppearanceSmall"
+            android:layout_marginTop="@dimen/empty_state_text_space"
+            android:text="@string/no_news"/>
+
+    </LinearLayout>
+
+    <!-- Empty view that is only visible when there's
+    no internet connection. -->
+
+    <LinearLayout
+        android:id="@+id/no_internet_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:gravity="center">
+
+        <ImageView
+            android:id="@+id/no_internet_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/no_internet"
             android:contentDescription="@string/empty_state_description"/>
 
         <TextView
@@ -65,7 +93,7 @@
             android:layout_height="wrap_content"
             android:textAppearance="?android:textAppearanceSmall"
             android:layout_marginTop="@dimen/empty_state_text_space"
-            tools:text="Empty state text"/>
+            android:text="@string/no_internet_connection"/>
 
     </LinearLayout>
 

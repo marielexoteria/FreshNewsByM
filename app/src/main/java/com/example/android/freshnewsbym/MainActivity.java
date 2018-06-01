@@ -1,16 +1,20 @@
 package com.example.android.freshnewsbym;
 
 import android.content.Intent;
-import android.graphics.Color;
+import android.content.SharedPreferences;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.app.LoaderManager;
 import android.app.LoaderManager.LoaderCallbacks;
@@ -19,6 +23,8 @@ import android.widget.TextView;
 import android.content.Context;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+
+import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,9 +42,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
      * URL for the news from The Guardian API.
      */
     private static final String GUARDIAN_API_REQUEST_URL =
-            "https://content.guardianapis.com/search?from-date=2017-01-01&order-by=newest" +
+            "https://content.guardianapis.com/search?";
+
+    /*private static final String GUARDIAN_API_REQUEST_URL =
+            "https://content.guardianapis.com/search?from-date=2018-01-01&order-by=newest" +
                     "&show-fields=headline%2Cbyline%2Cthumbnail&page-size=25&format=json" +
-                    "&api-key=5c759d1c-239f-445f-b72b-bfdb2d10b86b";
+                    "&api-key=5c759d1c-239f-445f-b72b-bfdb2d10b86b";*/
 
     /**
      * Constant value for the news loader ID. We can choose any integer.
@@ -51,21 +60,14 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
     //Using the Butterknife library to cast the views that will be used
     @BindView(R.id.fresh_news_list) ListView freshNewsListView;
-    @BindView(R.id.empty_view_icon) ImageView emptyStateImageView;
-    @BindView(R.id.empty_view_text) TextView emptyStateTextView;
+    @BindView(R.id.no_internet_layout) LinearLayout noInternetLayout;
+    @BindView(R.id.no_news_layout) LinearLayout noNewsLayout;
     @BindView(R.id.loading_indicator) View loadingIndicator;
     @BindView(R.id.text_loading) TextView loadingIndicatorText;
 
     //Using the Butterknife library to attach resources used in the footer
     @BindColor(R.color.footer_and_empty_state_text_color) int footerColor;
     @BindString(R.string.footer) String footerText;
-
-    //Using the Butterknife library to attach resources used in the "no internet connection" use case
-    @BindDrawable(R.drawable.no_wifi) Drawable noInternetIcon;
-    @BindString(R.string.no_internet_connection) String noInternetMsg;
-
-    //Using the Butterknife library to attach resources used in the "no news found" use case
-    @BindString(R.string.no_news) String noNewsMsg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,8 +79,12 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         TextView footer = new TextView(this);
 
         //Connecting the TextView that will be the empty view.
-        freshNewsListView.setEmptyView(emptyStateImageView);
-        freshNewsListView.setEmptyView(emptyStateTextView);
+        freshNewsListView.setEmptyView(noInternetLayout);
+        freshNewsListView.setEmptyView(noNewsLayout);
+
+        //Hiding the no news and the no internet msg
+        noNewsLayout.setVisibility(View.GONE);
+        noInternetLayout.setVisibility(View.GONE);
 
         //Create a new adapter that takes an empty list of news as input.
         newsAdapter = new FreshNewsAdapter(this, new ArrayList<FreshNews>());
@@ -144,20 +150,67 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
             loadingIndicator.setVisibility(View.GONE);
             loadingIndicatorText.setVisibility(View.GONE);
 
+            //Hiding the no news and the no internet msg
+            noNewsLayout.setVisibility(View.GONE);
+            noInternetLayout.setVisibility(View.GONE);
+
             //Update the empty state with no connection error message.
-            emptyStateImageView.setImageDrawable(noInternetIcon);
-            emptyStateTextView.setText(noInternetMsg);
+            noInternetLayout.setVisibility(View.VISIBLE);
         }
 
 
     }
 
-    @Override
+    /*@Override
     public Loader<List<FreshNews>> onCreateLoader(int i, Bundle bundle) {
 
         //Create a new loader for the given URL.
         return new FreshNewsLoader(this, GUARDIAN_API_REQUEST_URL);
+    }*/
+
+    @Override
+    //onCreateLoader instantiates and returns a new Loader for the given ID
+    public Loader<List<FreshNews>> onCreateLoader(int i, Bundle bundle) {
+
+        //To change the URI according to the preferences of the user
+        SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
+
+        //getString retrieves a String value from the preferences.
+        //The second parameter is the default value for this preference
+        String minAmountNews = sharedPrefs.getString(
+                getString(R.string.settings_min_amount_news_key),
+                getString(R.string.settings_min_amount_news_default));
+
+        //Parse breaks apart the URI string that's passed into its parameter
+        Uri baseUri = Uri.parse(GUARDIAN_API_REQUEST_URL);
+
+        //buildUpon prepares the baseUri that we just parsed so we can add query parameters to it
+        Uri.Builder uriBuilder = baseUri.buildUpon();
+
+        //Append query parameter and its value. For example, the `format=json`
+        String urlPart = "headline%2Cbyline%2Cthumbnail";
+        //String urlPartEncoded = URLDecoder.decode( url, "UTF-8" );
+        uriBuilder.appendQueryParameter("from-date", "2018-01-01");
+        uriBuilder.appendQueryParameter("order-by", "newest");
+        uriBuilder.appendQueryParameter("show-fields", URLDecoder.decode(urlPart, "UTF-8"));
+        uriBuilder.appendQueryParameter("page-size", minAmountNews);
+        uriBuilder.appendQueryParameter("format", "json");
+        uriBuilder.appendQueryParameter("api-key", "5c759d1c-239f-445f-b72b-bfdb2d10b86b");
+
+
+        /*'https://content.guardianapis.com/search?from-date=2018-01-01&order-by=newest
+        &show-fields=headline%2Cbyline%2Cthumbnail&page-size=25&format=json
+        &api-key=5c759d1c-239f-445f-b72b-bfdb2d10b86b'*/
+
+        //'https://content.guardianapis.com/search?from-date=2018-01-01&order-by=newest&
+        // show-fields=headline%252Cbyline%252Cthumbnail&page-size=25&format=json&
+        // api-key=5c759d1c-239f-445f-b72b-bfdb2d10b86b
+        Log.e(LOG_TAG, "The uri being built is " + uriBuilder.toString());
+
+        //Return the completed URI
+        return new FreshNewsLoader(this, uriBuilder.toString());
     }
+
 
     @Override
     public void onLoadFinished(Loader<List<FreshNews>> loader, List<FreshNews> news) {
@@ -166,8 +219,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         loadingIndicator.setVisibility(View.GONE);
         loadingIndicatorText.setVisibility(View.GONE);
 
-        //Set empty state text to display "No news found."
-        emptyStateTextView.setText(noNewsMsg);
+        //Hiding the no news and the no internet msg
+        noNewsLayout.setVisibility(View.GONE);
+        noInternetLayout.setVisibility(View.GONE);
 
         //Clear the adapter of previous news data
         newsAdapter.clear();
@@ -176,6 +230,9 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         //data set. This will trigger the ListView to update.
         if (news != null && !news.isEmpty()) {
             newsAdapter.addAll(news);
+        } else {
+            //Showing the no news msg
+            noNewsLayout.setVisibility(View.VISIBLE);
         }
     }
 
@@ -184,5 +241,24 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
 
         //Loader reset, so we can clear out our existing data.
         newsAdapter.clear();
+    }
+
+    @Override
+    // This method initialize the contents of the Activity's options menu
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    // This method is called whenever an item in the options menu is selected.
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if (id == R.id.action_settings) {
+            Intent settingsIntent = new Intent(this, SettingsActivity.class);
+            startActivity(settingsIntent);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
