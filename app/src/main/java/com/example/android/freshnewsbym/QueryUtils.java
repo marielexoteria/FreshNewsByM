@@ -48,11 +48,11 @@ public final class QueryUtils {
         URL url = createUrl(requestUrl);
 
         //Slowing down the background thread to test the loading indicator
-        try {
+        /*try {
             Thread.sleep(Constants.DELAYCONNECTION);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }
+        }*/
 
         //Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;

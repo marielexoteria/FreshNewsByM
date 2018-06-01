@@ -181,6 +181,11 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
                 getString(R.string.settings_min_amount_news_key),
                 getString(R.string.settings_min_amount_news_default));
 
+        String orderBy = sharedPrefs.getString(
+                getString(R.string.settings_order_by_key),
+                getString(R.string.settings_order_by_default)
+                 );
+
         //Parse breaks apart the URI string that's passed into its parameter
         Uri baseUri = Uri.parse(GUARDIAN_API_REQUEST_URL);
 
@@ -188,23 +193,13 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         Uri.Builder uriBuilder = baseUri.buildUpon();
 
         //Append query parameter and its value. For example, the `format=json`
-        String urlPart = "headline%2Cbyline%2Cthumbnail";
-        //String urlPartEncoded = URLDecoder.decode( url, "UTF-8" );
         uriBuilder.appendQueryParameter("from-date", "2018-01-01");
-        uriBuilder.appendQueryParameter("order-by", "newest");
-        uriBuilder.appendQueryParameter("show-fields", URLDecoder.decode(urlPart, "UTF-8"));
+        uriBuilder.appendQueryParameter("order-by", orderBy);
+        uriBuilder.appendQueryParameter("show-fields", "headline,byline,thumbnail");
         uriBuilder.appendQueryParameter("page-size", minAmountNews);
         uriBuilder.appendQueryParameter("format", "json");
         uriBuilder.appendQueryParameter("api-key", "5c759d1c-239f-445f-b72b-bfdb2d10b86b");
 
-
-        /*'https://content.guardianapis.com/search?from-date=2018-01-01&order-by=newest
-        &show-fields=headline%2Cbyline%2Cthumbnail&page-size=25&format=json
-        &api-key=5c759d1c-239f-445f-b72b-bfdb2d10b86b'*/
-
-        //'https://content.guardianapis.com/search?from-date=2018-01-01&order-by=newest&
-        // show-fields=headline%252Cbyline%252Cthumbnail&page-size=25&format=json&
-        // api-key=5c759d1c-239f-445f-b72b-bfdb2d10b86b
         Log.e(LOG_TAG, "The uri being built is " + uriBuilder.toString());
 
         //Return the completed URI
