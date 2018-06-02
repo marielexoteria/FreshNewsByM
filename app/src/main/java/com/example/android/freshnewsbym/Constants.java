@@ -28,8 +28,7 @@ public final class Constants {
     public static final String WEBPUBLICATIONDATE = "webPublicationDate";
 
     //Fallback values (QueryUtils.java)
-    public static final String THUMBNAILURL = "http://marielbackman.com/img/error_and_fallback_image.png"; //need
-        //to find a better service for photo hosting than this one
+    public static final String THUMBNAILURL = "http://marielbackman.com/img/error_and_fallback_image.png";
     public static final String BYLINENOTFOUND = "Author not available";
 
     //Values used in MainActivity.java
