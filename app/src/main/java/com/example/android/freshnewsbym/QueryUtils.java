@@ -3,6 +3,8 @@ package com.example.android.freshnewsbym;
 
 import android.text.TextUtils;
 import android.util.Log;
+import android.widget.ListView;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -24,7 +26,7 @@ import java.util.TimeZone;
 
 public final class QueryUtils {
 
-     private static final String LOG_TAG = QueryUtils.class.getSimpleName();
+    private static final String LOG_TAG = QueryUtils.class.getSimpleName();
 
     /**
      * Create a private constructor because no one should ever create a {@link QueryUtils} object.
@@ -48,11 +50,11 @@ public final class QueryUtils {
         URL url = createUrl(requestUrl);
 
         //Slowing down the background thread to test the loading indicator
-        /*try {
+        try {
             Thread.sleep(Constants.DELAYCONNECTION);
         } catch (InterruptedException e) {
             e.printStackTrace();
-        }*/
+        }
 
         //Perform HTTP request to the URL and receive a JSON response back
         String jsonResponse = null;
@@ -108,7 +110,7 @@ public final class QueryUtils {
                 inputStream = urlConnection.getInputStream();
                 jsonResponse = readFromStream(inputStream);
             } else {
-                Log.e(LOG_TAG, Constants.RESPONDECODEURLCONNECTION + urlConnection.getResponseCode());
+                Log.e(LOG_TAG, Constants.RESPONSECODEURLCONNECTION + urlConnection.getResponseCode());
             }
         } catch (IOException e) {
             Log.e(LOG_TAG, Constants.IOEXCEPTIONURLCONNECTION, e);
@@ -191,20 +193,49 @@ public final class QueryUtils {
                 String headline = fields.getString(Constants.HEADLINE);
                 String thumbnail, byline;
 
-                //Fallback text in case there is no thumbnail
-                String thumb = fields.optString(Constants.THUMBNAIL, null);
+                //troubleshooting issue loading placeholder and fallback images
+                //will remove when I'm finished
+                //int thumbnail;
+                //thumbnail = R.drawable.error_and_fallback_image_portrait;
+
+                //thumbnail = Constants.THUMBNAILURL;
+
+
+                if (fields.has("thumbnail")) {
+                    if (!fields.getString(Constants.THUMBNAIL).isEmpty()) {
+                        thumbnail = fields.getString(Constants.THUMBNAIL);
+                    } else {
+                        thumbnail = Constants.THUMBNAILURL;
+                    }
+                } else {
+                    thumbnail = Constants.THUMBNAILURL;
+                }
+
+                //Fallback image in case of no thumbnail - old code, will remove when finished
+                /*String thumb = fields.optString(Constants.THUMBNAIL, null);
                 if (TextUtils.isEmpty(thumb)) {
                     thumbnail = Constants.THUMBNAILURL;
                 } else {
                     thumbnail= fields.getString(Constants.THUMBNAIL);
-                }
+                }*/
+
 
                 //Fallback text in case there is no author
-                if (fields.getString(Constants.BYLINE).isEmpty()) {
-                    byline = Constants.BYLINENOTFOUND;
+                if (fields.has("byline")) {
+                    if (!fields.getString(Constants.BYLINE).isEmpty()) {
+                        byline = fields.getString(Constants.BYLINE);
+                    } else {
+                        byline = Constants.BYLINENOTFOUND;
+                    }
                 } else {
-                    byline = fields.getString(Constants.BYLINE);
+                    byline = Constants.BYLINENOTFOUND;
                 }
+
+                //To be removed when I finish the app
+                Log.e(LOG_TAG, "thumbnail is " + thumbnail);
+                Log.e(LOG_TAG, "headline is " + headline);
+                Log.e(LOG_TAG, "byline is " + byline);
+
 
                 //Formatting the date to "May 27, 2018 14:05" on London time zone.
                 SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd'T'kk:mm:ss'Z'", Locale.UK);

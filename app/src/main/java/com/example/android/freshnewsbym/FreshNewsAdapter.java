@@ -1,7 +1,9 @@
 package com.example.android.freshnewsbym;
 
 import android.app.Activity;
+import android.graphics.Bitmap;
 import android.graphics.drawable.Drawable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,7 +14,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import java.util.ArrayList;
 
+import butterknife.BindBitmap;
 import butterknife.BindDrawable;
+import butterknife.BindString;
 
 public class FreshNewsAdapter extends ArrayAdapter<FreshNews> {
 

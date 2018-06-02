@@ -12,12 +12,24 @@
     <!-- Footer -->
     <string name="footer">Powered by The Guardian</string>
 
-    <!-- Various messages -->
+    <!-- Messages for the different empty state screens -->
     <string name="text_loading">Fetching your news&#8230;</string>
-    <string name="no_news">Oops! It looks like a slow news day.\nChange the settings and try again. </string>
-    <string name="no_internet_connection">We lost the connection.\nCheck your wifi settings and try again.</string>
+    <string name="no_news">Oops! It looks like a slow news day.\nChange the settings on the top right corner
+        \nand try again. </string>
+    <string name="no_internet_connection">Oops! Slow or no internet connection.
+        \nCheck your wifi or mobile data settings and try again.</string>
 
-    <!-- For the Setting screen -->
+    <!-- Error messages (QueryUtils.java) -->
+    <string name="io_exception_http_request">Problem making the HTTP request.</string>
+    <string name="malformed_url_exception">Problem building the URL\u0020</string>
+    <string name="response_code_url_connection">Error response code:\u0020</string>
+    <string name="io_exception_url_connection">Problem retrieving the JSON results (URL connection).</string>
+    <string name="json_exception_queryutils">Problem parsing the news JSON results.</string>
+
+    <!-- Fallback text in case the news article doesn't have a byline -->
+    <string name="no_byline">Author not available</string>
+
+    <!-- For the Settings screen -->
     <string name="settings_menu_item">Settings</string>
     <string name="settings_title">Settings</string>
 

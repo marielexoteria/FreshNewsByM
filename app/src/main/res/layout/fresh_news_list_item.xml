@@ -70,7 +70,7 @@
         android:layout_marginLeft="@dimen/padding_horizontal"
         android:layout_marginRight="@dimen/padding_horizontal"
         android:layout_marginTop="@dimen/margin_vertical"
-        android:textColor="@color/colorPrimary"
+        android:textColor="@color/colorAccent"
         android:textSize="@dimen/byline_and_date"
         app:fontFamily="@font/roboto_medium"
         tools:text="Category" />
