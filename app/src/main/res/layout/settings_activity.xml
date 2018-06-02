@@ -2,7 +2,7 @@
     <!-- Layout for our Settings Activity,
     containing a Preference Fragment -->
     <fragment
-    android:id="@+id/fragment_settings"
+        android:id="@+id/fragment_settings"
         android:name="com.example.android.freshnewsbym.SettingsActivity$NewsPreferenceFragment"
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"

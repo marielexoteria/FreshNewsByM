@@ -14,8 +14,8 @@
 
     <!-- Messages for the different empty state screens -->
     <string name="text_loading">Fetching your news&#8230;</string>
-    <string name="no_news">Oops! It looks like a slow news day.\nChange the settings on the top right corner
-        \nand try again. </string>
+    <string name="no_news">Oops! It looks like a slow news day.\nChange the app settings on the top right \n
+        corner and try again. </string>
     <string name="no_internet_connection">Oops! Slow or no internet connection.
         \nCheck your wifi or mobile data settings and try again.</string>
 

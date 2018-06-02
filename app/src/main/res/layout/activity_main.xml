@@ -51,12 +51,13 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
+        android:layout_centerInParent="true"
         android:gravity="center">
 
         <ImageView
             android:id="@+id/no_news_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/empty_state_icon_size"
+            android:layout_height="@dimen/empty_state_icon_size"
             android:src="@drawable/no_news"
             android:contentDescription="@string/empty_state_description"/>
 
@@ -85,8 +86,8 @@
 
         <ImageView
             android:id="@+id/no_internet_icon"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="@dimen/empty_state_icon_size"
+            android:layout_height="@dimen/empty_state_icon_size"
             android:src="@drawable/no_internet"
             android:contentDescription="@string/empty_state_description"/>
 

@@ -102,7 +102,7 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
                 FreshNews currentFreshNews = newsAdapter.getItem(position);
 
                 //Convert the String URL into a URI object (to pass into the Intent constructor).
-                Uri freshNewsUri = Uri.parse(currentFreshNews.getURL());
+                Uri freshNewsUri = Uri.parse(currentFreshNews.getNewsURL());
 
                 //Create a new intent to view the news URI.
                 Intent websiteIntent = new Intent(Intent.ACTION_VIEW, freshNewsUri);
@@ -186,9 +186,6 @@ public class MainActivity extends AppCompatActivity implements LoaderCallbacks<L
         uriBuilder.appendQueryParameter(Constants.PAGESIZEQUERYPARAMETER, minAmountNews);
         uriBuilder.appendQueryParameter(Constants.FORMATQUERYPARAMETER, Constants.FORMATVALUE);
         uriBuilder.appendQueryParameter(Constants.APIKEYQUERYPARAMETER, Constants.APIKEYVALUE);
-
-        //To be removed when I'm done
-        Log.e(LOG_TAG, "The URI being built is " + uriBuilder);
 
         //Return the completed URI
         return new FreshNewsLoader(this, uriBuilder.toString());

@@ -11,7 +11,7 @@
     <!-- Styling the circular loading indicator -->
     <!-- tutorial from https://materialdoc.com/components/progress/#how-to-style_1 -->
     <style name="CircularProgress" parent="Theme.AppCompat.Light">
-        <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorAccent">@color/colorAccent</item>
     </style>
 
 </resources>

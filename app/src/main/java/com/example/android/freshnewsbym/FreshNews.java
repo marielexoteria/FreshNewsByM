@@ -3,9 +3,6 @@ package com.example.android.freshnewsbym;
 public class FreshNews {
 
     //URL of the thumbnail associated with the news article
-    //troubleshooting issue loading placeholder and fallback images
-    //will remove when I'm finished
-    //private int thumbnail;
     private String thumbnail;
 
     //Headline of the news article
@@ -47,12 +44,6 @@ public class FreshNews {
     /**
      * Get the URL of the thumbnail
      */
-    //troubleshooting issue loading placeholder and fallback images
-    //                //will remove when I'm finished
-    /*public int getThumbnail() {
-        return thumbnail;
-    }*/
-
     public String getThumbnail() {
            return thumbnail;
     }
@@ -89,7 +80,7 @@ public class FreshNews {
     /**
      * Get the URL of the news article
      */
-    public String getURL() {
+    public String getNewsURL() {
         return url;
     }
 }

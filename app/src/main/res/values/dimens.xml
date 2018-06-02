@@ -5,6 +5,8 @@
     <dimen name="divider_height">0dp</dimen>
     <dimen name="empty_state_text_space">10dp</dimen>
 
+    <dimen name="empty_state_icon_size">48dp</dimen>
+
     <!-- Dimension used in the circular progress bar -->
     <dimen name="circular_progess_bar_size">32dp</dimen>
 

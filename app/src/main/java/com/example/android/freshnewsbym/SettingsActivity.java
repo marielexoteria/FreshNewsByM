@@ -7,6 +7,7 @@ import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.MenuItem;
 
 public class SettingsActivity extends AppCompatActivity {
 
@@ -14,6 +15,9 @@ public class SettingsActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.settings_activity);
+
+        //Enabling UP navigation
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
     }
 
     public static class NewsPreferenceFragment extends PreferenceFragment
@@ -24,8 +28,8 @@ public class SettingsActivity extends AppCompatActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings_main);
 
-            Preference minMagnitude = findPreference(getString(R.string.settings_min_amount_news_key));
-            bindPreferenceSummaryToValue(minMagnitude);
+            Preference minAmountNews = findPreference(getString(R.string.settings_min_amount_news_key));
+            bindPreferenceSummaryToValue(minAmountNews);
 
             Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
             bindPreferenceSummaryToValue(orderBy);
@@ -56,5 +60,17 @@ public class SettingsActivity extends AppCompatActivity {
             String preferenceString = preferences.getString(preference.getKey(), "");
             onPreferenceChange(preference, preferenceString);
         }
+    }
+
+    //UP navigation code modified to go to the previous activity (screen with the list of news).
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            // Respond to the action bar's Up/Home button
+            case android.R.id.home:
+                this.finish();
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
